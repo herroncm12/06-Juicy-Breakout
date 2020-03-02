@@ -1,6 +1,21 @@
 extends KinematicBody2D
+onready var _shape = $ColorRect.get_rect().size
+onready var _view = get_viewport().get_visible_rect().size
 
-func _physics_process(delta):
+
+export var distort_x = 2.0
+export var distort_y = 1.2
+
+var _target = position 
+
+func _ready():
+	set_process(true)
+	position.y = -30
+	$Tween.interpolate_property(self,"position", position, _target, 1.0, Tween.TRANS_BOUNCE, Tween.EASE_OUT)
+	$Tween.start()
+
+
+func _physics_process(_delta):
 	var shape = $ColorRect.get_rect().size
 	var view = get_viewport().get_visible_rect().size
 	var target = get_viewport().get_mouse_position().x
@@ -9,3 +24,12 @@ func _physics_process(delta):
 	if target > view.x - shape.x / 2:
 		target = view.x - shape.x / 2
 	position = Vector2(target, position.y)
+	
+	if target != position.x:
+		var x = position.x + ((target - position.x)*0.2)
+		var _w = 1 +(distort_x *(abs(target - position.x)/ _view.x))
+		var _h = 1 - (1/distort_y *(abs(target - position.x)/ _view.y))
+		position = Vector2(x, position.y)
+
+func _change_size(_w,_h):
+	pass

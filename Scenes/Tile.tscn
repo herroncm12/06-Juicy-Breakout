@@ -1,14 +1,20 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Scripts/Tile.gd" type="Script" id=1]
+[ext_resource path="res://Assets/kenney.nl/smoke_02.png" type="Texture" id=2]
 
-[sub_resource type="RectangleShape2D" id=4]
+[sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 32, 16 )
+
+[sub_resource type="ParticlesMaterial" id=2]
+flag_disable_z = true
+gravity = Vector3( 0, 98, 0 )
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
 
 [node name="Tile" type="StaticBody2D" groups=[
 "Tiles",
 ]]
-editor/display_folded = true
 position = Vector2( 104, 296 )
 script = ExtResource( 1 )
 __meta__ = {
@@ -20,6 +26,20 @@ margin_left = -32.0
 margin_top = -16.0
 margin_right = 32.0
 margin_bottom = 16.0
+color = Color( 0.192157, 0.0196078, 0.913725, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource( 4 )
+shape = SubResource( 1 )
+
+[node name="Tween" type="Tween" parent="."]
+
+[node name="Timer" type="Timer" parent="."]
+
+[node name="Particles" type="Particles2D" parent="."]
+emitting = false
+one_shot = true
+process_material = SubResource( 2 )
+texture = ExtResource( 2 )
